@@ -22,11 +22,21 @@ from email_preprocess import preprocess
 features_train, features_test, labels_train, labels_test = preprocess()
 
 
-
-
 #########################################################
-### your code goes here ###
 
+from sklearn.naive_bayes import GaussianNB
+
+classifier = GaussianNB()
+
+t0 = time()
+classifier.fit(features_train, labels_train)
+print "\ntraining time:", round(time()-t0, 3), "s\n"
+
+t0 = time()
+label_prediction = classifier.predict(features_test)
+print "\nprediction time:", round(time()-t0, 3), "s\n"
+
+print "The accuracity is", classifier.score(features_test, labels_test)
 
 #########################################################
 
