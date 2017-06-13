@@ -29,8 +29,7 @@ target, features = targetFeatureSplit( data )
 from sklearn.cross_validation import train_test_split
 feature_train, feature_test, target_train, target_test = train_test_split(features, target, test_size=0.5, random_state=42)
 train_color = "b"
-test_color = "b"
-
+test_color = "r"
 
 
 ### Your regression goes here!
@@ -39,11 +38,19 @@ test_color = "b"
 ### "r" to differentiate training points from test points.
 
 
+from sklearn.linear_model import LinearRegression
+
+reg = LinearRegression()
+
+print 'Using training examples'
+reg.fit(feature_train, target_train)
 
 
+print 'Slope: ', reg.coef_
+print 'Intercept: ', reg.intercept_
 
-
-
+print 'Score (Training examples): ', reg.score(feature_train, target_train)
+print 'Score (Test examples): ', reg.score(feature_test, target_test)
 
 ### draw the scatterplot, with color-coded training and testing points
 import matplotlib.pyplot as plt
@@ -61,9 +68,25 @@ plt.scatter(feature_test[0], target_test[0], color=train_color, label="train")
 
 ### draw the regression line, once it's coded
 try:
-    plt.plot( feature_test, reg.predict(feature_test) )
+	# a partir de lo que hay en train, traza una linea para lo que hay en test
+    plt.plot( feature_test, reg.predict(feature_test), color='g')
 except NameError:
     pass
+
+print 'Using test examples'
+
+reg.fit(feature_test, target_test)
+# a partir de lo que hay en test, traza una linea para lo que hay en train
+plt.plot(feature_train, reg.predict(feature_train), color="y") 
+
+print 'Slope: ', reg.coef_
+print 'Intercept: ', reg.intercept_
+
+print 'Score (Training examples): ', reg.score(feature_train, target_train)
+print 'Score (Test examples): ', reg.score(feature_test, target_test)
+
+
+
 plt.xlabel(features_list[1])
 plt.ylabel(features_list[0])
 plt.legend()
